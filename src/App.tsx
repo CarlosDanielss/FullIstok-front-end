@@ -1,12 +1,14 @@
+import Toolbar from './shared/components/lateral-menu/Toolbar';
+import AppThemeProvider from './shared/contexts/ThemeContext';
 
 
 
 const App = () => {
   return (
-    <div className="App">
-     <h1>Hellow</h1>
-    </div>
+    <AppThemeProvider>
+      <Toolbar />
+    </AppThemeProvider>
   );
-}
+};
 
 export default App;
