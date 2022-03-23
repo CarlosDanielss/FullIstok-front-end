@@ -6,7 +6,7 @@ import App from './App';
 
 ReactDOM.render(
   <React.StrictMode>
-    <CssBaseline />
+    <CssBaseline/>
     <App />
   </React.StrictMode>,
   document.getElementById('root')

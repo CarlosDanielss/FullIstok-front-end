@@ -1,33 +1,35 @@
-import { Drawer, Box, useTheme, Avatar, Divider, List, ListItemButton, ListItemIcon, Icon, ListItemText } from '@mui/material';
+import { Drawer, Box, useTheme, Avatar, Divider, List, ListItemButton, ListItemIcon, Icon, ListItemText, useMediaQuery } from '@mui/material';
+import { useDrawerContext } from '../../contexts/DrawerContext';
 import { useAppThemeContext } from '../../contexts/ThemeContext';
 
 
-interface IListItemLinkProps{
-  label : string,
+interface IListItemLinkProps {
+  label: string,
   icon: string,
 }
 
 
-const ListItemLink : React.FC<IListItemLinkProps> = ({label, icon}) => {
-  return(
+const ListItemLink: React.FC<IListItemLinkProps> = ({ label, icon }) => {
+  return (
     <ListItemButton>
       <ListItemIcon>
         <Icon>{icon}</Icon>
       </ListItemIcon>
-      <ListItemText primary={label}/>
+      <ListItemText primary={label} />
     </ListItemButton>
   );
 };
 
 
-const Toolbar: React.FC = () => {
+const LateralMenu: React.FC = ({ children }) => {
   const theme = useTheme();
-
-  const {themeName, toogleTheme} = useAppThemeContext();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isDrawerOpen, toogleDrawerOpen } = useDrawerContext();
+  const { themeName, toogleTheme } = useAppThemeContext();
 
   return (
     <>
-      <Drawer variant='permanent'>
+      <Drawer open={isDrawerOpen} variant={smDown ? 'temporary' : 'permanent'} onClose={toogleDrawerOpen}>
         <Box
           width={theme.spacing(28)}
           height='100%'
@@ -52,27 +54,31 @@ const Toolbar: React.FC = () => {
           <Divider />
 
           <Box flex={1}>
-            <List>
+            <List component='nav'>
               <ListItemLink
                 label='Pagina inicial'
-                icon= 'home'
+                icon='home'
               />
             </List>
           </Box>
           <Box>
-            <List>
+            <List component='nav'>
               <ListItemButton onClick={toogleTheme}>
                 <ListItemIcon>
-                  <Icon>{themeName === 'dark' ? 'dark_mode' : 'light_mode' }</Icon>
+                  <Icon>{themeName === 'dark' ? 'dark_mode' : 'light_mode'}</Icon>
                 </ListItemIcon>
-                <ListItemText primary='Alterar Tema'/>
+                <ListItemText primary='Alterar Tema' />
               </ListItemButton>
             </List>
           </Box>
         </Box>
       </Drawer>
+
+      <Box height='100vh' marginLeft={smDown ? 0 : theme.spacing(28)}>
+        {children}
+      </Box>
     </>
   );
 };
 
-export default Toolbar;
+export default LateralMenu;
